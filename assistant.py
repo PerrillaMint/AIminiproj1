@@ -84,7 +84,13 @@ class SentimentAnalyzer:
     def analyze(self, text):
         """Return (label, confidence) for the given text."""
         result = self.pipeline(text)[0]
-        return result["label"], float(result["score"])
+        label = result["label"]
+        score = float(result["score"])
+
+        if label == "POSITIVE" and score < 0.75:
+            label = "NEUTRAL"
+
+        return label, score
 
 
 class StudentSupportAssistant:
